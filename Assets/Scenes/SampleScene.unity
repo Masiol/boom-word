@@ -1390,6 +1390,7 @@ GameObject:
   - component: {fileID: 1506319706}
   - component: {fileID: 1506319705}
   - component: {fileID: 1506319704}
+  - component: {fileID: 1506319708}
   m_Layer: 5
   m_Name: MenuCanvas
   m_TagString: Untagged
@@ -1480,6 +1481,37 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1506319708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1506319703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c7a6c1209e62134eb2d0b4f72bda525, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MenuAnimation
+  logoBomb: {fileID: 1138744494}
+  logoText: {fileID: 21718886}
+  startButton: {fileID: 2043614050}
+  settingsButton: {fileID: 541677125}
+  howToPlayButton: {fileID: 1961432261}
+  introDelay: 0.3
+  shrinkScale: 0.8
+  shrinkTime: 0.3
+  jumpHeight: 300
+  riseTime: 0.3
+  riseEase: 9
+  landingY: -650
+  fallTime: 0.5
+  fallEase: 5
+  landPunchPower: 0.15
+  landPunchTime: 0.25
+  uiSlideDistance: 800
+  uiSlideTime: 0.4
+  uiSlideEase: 26
 --- !u!1 &1699616110
 GameObject:
   m_ObjectHideFlags: 0
