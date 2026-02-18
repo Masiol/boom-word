@@ -45,6 +45,17 @@ public class MenuAnimation : MonoBehaviour
 
     Vector2 bombStartPos;
 
+    [Header("Settings Transition")]
+
+    public RectTransform settingsPanel;
+
+    public float settingsDuration = 0.35f;
+    public Ease settingsEase = Ease.InBack;
+    public float panelIntroTime = 0.45f;
+    public Ease panelDropEase = Ease.OutBack;
+
+
+
     void Awake()
     {
         logoBomb.localScale = Vector3.zero;
@@ -56,6 +67,8 @@ public class MenuAnimation : MonoBehaviour
         PrepareButton(howToPlayButton);
 
         bombStartPos = logoBomb.anchoredPosition;
+
+        PrepareSettingsPanel();
     }
 
     void Start()
@@ -66,7 +79,57 @@ public class MenuAnimation : MonoBehaviour
         SetupButton(howToPlayButton);
 
         startButton.GetComponent<Button>().onClick.AddListener(PlayStartTransition);
+        settingsButton.GetComponent<Button>().onClick.AddListener(PlaySettingsTransition);
+
     }
+
+
+    void PrepareSettingsPanel()
+    {
+        if (settingsPanel == null) return;
+
+        CanvasGroup cg = GetOrAddCanvasGroup(settingsPanel);
+
+        cg.alpha = 0f;
+        cg.interactable = false;
+        cg.blocksRaycasts = false;
+
+        settingsPanel.localScale = Vector3.zero;
+    }
+
+    void ShowSettingsPanel()
+    {
+        if (settingsPanel == null) return;
+
+        CanvasGroup cg = GetOrAddCanvasGroup(settingsPanel);
+
+        settingsPanel.gameObject.SetActive(true);
+
+        // Stan początkowy
+        settingsPanel.localScale = Vector3.zero;
+        cg.alpha = 0f;
+        cg.interactable = false;
+        cg.blocksRaycasts = false;
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(
+            settingsPanel.DOScale(1f, panelIntroTime)
+                .SetEase(panelDropEase)
+        );
+
+        seq.Join(
+            cg.DOFade(1f, panelIntroTime)
+        );
+
+        seq.OnComplete(() =>
+        {
+            cg.interactable = true;
+            cg.blocksRaycasts = true;
+        });
+    }
+
+
 
     void PrepareButton(RectTransform button)
     {
@@ -217,7 +280,7 @@ public class MenuAnimation : MonoBehaviour
 
         seq.OnComplete(() =>
         {
-            StartBombIdle();
+          //  StartBombIdle();
         });
     }
 
@@ -242,4 +305,85 @@ public class MenuAnimation : MonoBehaviour
             click.Append(button.DOScale(1f, 0.08f));
         });
     }
+
+    void PlaySettingsTransition()
+    {
+        // Zatrzymujemy idle bomby
+        logoBomb.DOKill();
+
+        Sequence seq = DOTween.Sequence();
+        /*
+        // ======================
+        // BOMB + TEXT
+        // ======================
+
+        CanvasGroup bombCG = GetOrAddCanvasGroup(logoBomb);
+        CanvasGroup textCG = GetOrAddCanvasGroup(logoText);
+
+        seq.Join(
+            logoBomb.DOScale(settingsScaleDown, settingsDuration)
+            .SetEase(settingsEase)
+        );
+
+        seq.Join(
+            logoBomb.DOAnchorPosY(logoBomb.anchoredPosition.y + settingsMoveUp, settingsDuration)
+            .SetEase(settingsEase)
+        );
+
+        seq.Join(
+            bombCG.DOFade(0f, settingsDuration)
+        );
+
+        seq.Join(
+            logoText.DOScale(settingsScaleDown, settingsDuration)
+            .SetEase(settingsEase)
+        );
+
+        seq.Join(
+            logoText.DOAnchorPosY(logoText.anchoredPosition.y + settingsMoveUp, settingsDuration)
+            .SetEase(settingsEase)
+        );
+
+        seq.Join(
+            textCG.DOFade(0f, settingsDuration)
+        );
+
+        // ======================
+        // BUTTONS
+        // ======================
+
+        AnimateButtonHide(startButton);
+        AnimateButtonHide(settingsButton);
+        AnimateButtonHide(howToPlayButton);*/
+
+        seq.OnComplete(() =>
+        {
+            ShowSettingsPanel();
+        });
+    }
+    CanvasGroup GetOrAddCanvasGroup(RectTransform target)
+    {
+        CanvasGroup cg = target.GetComponent<CanvasGroup>();
+        if (cg == null)
+            cg = target.gameObject.AddComponent<CanvasGroup>();
+        return cg;
+    }
+
+    void AnimateButtonHide(RectTransform button)
+    {
+        if (button == null) return;
+
+        CanvasGroup cg = GetOrAddCanvasGroup(button);
+
+        button.DOScale(0.7f, settingsDuration)
+            .SetEase(settingsEase);
+
+        button.DORotate(new Vector3(0, 0, 10f), settingsDuration)
+            .SetEase(settingsEase);
+
+        cg.DOFade(0f, settingsDuration);
+    }
+
+
+
 }
