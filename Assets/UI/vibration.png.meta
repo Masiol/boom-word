@@ -1,10 +1,16 @@
 fileFormatVersion: 2
-guid: c6f9ec35e74f0934281f98eca59d3f9d
+guid: 6fdcc2658ee986e458a5c00d4f876ab5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 6243882462460558943
-    second: Bottomnav_0
+      213: -6925040540963319615
+    second: vibration_0
+  - first:
+      213: -7536389468026232266
+    second: vibration_1
+  - first:
+      213: 9158692265645642194
+    second: vibration_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +132,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bottomnav_0
+      name: vibration_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1290
-        height: 217
+        x: 4
+        y: 69
+        width: 50
+        height: 104
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +147,52 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5eb042a40ab6a650800000000000000
-      internalID: 6243882462460558943
+      spriteID: 1c0d3b4815055ef90800000000000000
+      internalID: -6925040540963319615
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vibration_1
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 9
+        width: 186
+        height: 220
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6322d4555bd596790800000000000000
+      internalID: -7536389468026232266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: vibration_2
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 48
+        width: 58
+        height: 125
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2d11dec37163a1f70800000000000000
+      internalID: 9158692265645642194
       vertices: []
       indices: 
       edges: []
@@ -161,7 +211,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Bottomnav_0: 6243882462460558943
+      vibration_0: -6925040540963319615
+      vibration_1: -7536389468026232266
+      vibration_2: 9158692265645642194
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

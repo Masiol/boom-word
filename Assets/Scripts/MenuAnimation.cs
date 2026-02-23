@@ -54,6 +54,43 @@ public class MenuAnimation : MonoBehaviour
     public float panelIntroTime = 0.45f;
     public Ease panelDropEase = Ease.OutBack;
 
+    [Header("Settings Hide Values")]
+    public float settingsScaleDown = 0.8f;
+    public float settingsMoveUp = 60f;
+
+    [Header("Bomb Fly Up Settings")]
+
+    public float flyUpDistance = 600f;
+    public float flyUpTime = 0.6f;
+    public Ease flyUpEase = Ease.OutExpo;
+
+    [Space(5)]
+    public float fadeDelay = 0.15f;
+    public float fadeTime = 0.35f;
+
+    [Space(5)]
+    public float fadeScale = 0.8f;
+
+    [Header("Buttons Slide Left")]
+
+    public float buttonsSlideDistance = 800f;
+    public float buttonsSlideTime = 0.4f;
+    public Ease buttonsSlideEase = Ease.InBack;
+
+    [Header("Buttons Parent")]
+    public RectTransform buttonsParent;
+
+    [Header("Debug Reset Key")]
+    public KeyCode resetKey = KeyCode.R;
+
+    Vector2 bombStartPoss;
+    Vector2 textStartPos;
+    Vector2 buttonsParentStartPos;
+
+    Vector2 startButtonStartPos;
+    Vector2 settingsButtonStartPos;
+    Vector2 howToPlayButtonStartPos;
+
 
 
     void Awake()
@@ -69,7 +106,25 @@ public class MenuAnimation : MonoBehaviour
         bombStartPos = logoBomb.anchoredPosition;
 
         PrepareSettingsPanel();
+
+        SaveInitialPositions();
+
     }
+
+    void SaveInitialPositions()
+    {
+        bombStartPos = logoBomb.anchoredPosition;
+        textStartPos = logoText.anchoredPosition;
+
+        if (buttonsParent != null)
+            buttonsParentStartPos = buttonsParent.anchoredPosition;
+
+        // 🔥 NOWE
+        startButtonStartPos = startButton.anchoredPosition;
+        settingsButtonStartPos = settingsButton.anchoredPosition;
+        howToPlayButtonStartPos = howToPlayButton.anchoredPosition;
+    }
+
 
     void Start()
     {
@@ -82,6 +137,50 @@ public class MenuAnimation : MonoBehaviour
         settingsButton.GetComponent<Button>().onClick.AddListener(PlaySettingsTransition);
 
     }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(resetKey))
+        {
+            ResetToInitialState();
+        }
+    }
+
+    void ResetToInitialState()
+    {
+        // Kill wszystkie tweeny
+        DOTween.KillAll();
+
+        // ===== BOMB =====
+        logoBomb.anchoredPosition = bombStartPos;
+        logoBomb.localScale = Vector3.one;
+        logoBomb.localRotation = Quaternion.identity;
+
+        CanvasGroup bombCG = GetOrAddCanvasGroup(logoBomb);
+        bombCG.alpha = 1f;
+
+        // ===== TEXT =====
+        logoText.anchoredPosition = textStartPos;
+        logoText.localScale = Vector3.one;
+
+        CanvasGroup textCG = GetOrAddCanvasGroup(logoText);
+        textCG.alpha = 1f;
+
+        // ===== BUTTONS PARENT =====
+        if (buttonsParent != null)
+        {
+            buttonsParent.anchoredPosition = buttonsParentStartPos;
+            buttonsParent.localScale = Vector3.one;
+
+            CanvasGroup parentCG = GetOrAddCanvasGroup(buttonsParent);
+            parentCG.alpha = 1f;
+        }
+        LayoutRebuilder.ForceRebuildLayoutImmediate(buttonsParent);
+        // Opcjonalnie przywróć idle bomby
+        StartBombIdle();
+    }
+
+
 
 
     void PrepareSettingsPanel()
@@ -147,7 +246,7 @@ public class MenuAnimation : MonoBehaviour
     // =========================
     // INTRO
     // =========================
-    void PlayIntro()
+    public void PlayIntro()
     {
         Sequence intro = DOTween.Sequence().SetDelay(introDelay);
 
@@ -274,7 +373,7 @@ public class MenuAnimation : MonoBehaviour
 
         // Powrót do normalnej skali
         seq.Append(
-            logoBomb.DOScale(Vector3.one, 0.2f)
+            logoBomb.DOScale(Vector3.one * 1.12f, 0.2f)
             .SetEase(Ease.OutBack)
         );
 
@@ -308,59 +407,25 @@ public class MenuAnimation : MonoBehaviour
 
     void PlaySettingsTransition()
     {
-        // Zatrzymujemy idle bomby
         logoBomb.DOKill();
 
         Sequence seq = DOTween.Sequence();
-        /*
-        // ======================
-        // BOMB + TEXT
-        // ======================
 
-        CanvasGroup bombCG = GetOrAddCanvasGroup(logoBomb);
-        CanvasGroup textCG = GetOrAddCanvasGroup(logoText);
+        // Logo w prawo
+        logoText.DOAnchorPosX(textStartPos.x + uiSlideDistance, uiSlideTime)
+            .SetEase(uiSlideEase);
 
-        seq.Join(
-            logoBomb.DOScale(settingsScaleDown, settingsDuration)
-            .SetEase(settingsEase)
-        );
+        logoBomb.DOAnchorPosX(bombStartPos.x + uiSlideDistance, uiSlideTime)
+            .SetEase(uiSlideEase);
 
-        seq.Join(
-            logoBomb.DOAnchorPosY(logoBomb.anchoredPosition.y + settingsMoveUp, settingsDuration)
-            .SetEase(settingsEase)
-        );
-
-        seq.Join(
-            bombCG.DOFade(0f, settingsDuration)
-        );
-
-        seq.Join(
-            logoText.DOScale(settingsScaleDown, settingsDuration)
-            .SetEase(settingsEase)
-        );
-
-        seq.Join(
-            logoText.DOAnchorPosY(logoText.anchoredPosition.y + settingsMoveUp, settingsDuration)
-            .SetEase(settingsEase)
-        );
-
-        seq.Join(
-            textCG.DOFade(0f, settingsDuration)
-        );
-
-        // ======================
-        // BUTTONS
-        // ======================
-
-        AnimateButtonHide(startButton);
-        AnimateButtonHide(settingsButton);
-        AnimateButtonHide(howToPlayButton);*/
-
-        seq.OnComplete(() =>
-        {
-            ShowSettingsPanel();
-        });
+        // Buttons parent w lewo (tylko X!)
+        buttonsParent.DOAnchorPosX(buttonsParentStartPos.x - uiSlideDistance, uiSlideTime)
+            .SetEase(uiSlideEase);
     }
+
+
+
+
     CanvasGroup GetOrAddCanvasGroup(RectTransform target)
     {
         CanvasGroup cg = target.GetComponent<CanvasGroup>();
@@ -369,19 +434,68 @@ public class MenuAnimation : MonoBehaviour
         return cg;
     }
 
-    void AnimateButtonHide(RectTransform button)
+    public void PlayBackFromSettings()
     {
-        if (button == null) return;
+        logoBomb.DOKill();
+        DOTween.Kill(settingsPanel);
 
-        CanvasGroup cg = GetOrAddCanvasGroup(button);
+        Sequence seq = DOTween.Sequence().SetDelay(0.15f);
 
-        button.DOScale(0.7f, settingsDuration)
-            .SetEase(settingsEase);
+        // ===== 1️⃣ Ukrycie panelu =====
+        if (settingsPanel != null)
+        {
+            CanvasGroup cg = GetOrAddCanvasGroup(settingsPanel);
 
-        button.DORotate(new Vector3(0, 0, 10f), settingsDuration)
-            .SetEase(settingsEase);
+            seq.Append(
+                settingsPanel.DOScale(settingsScaleDown, settingsDuration)
+                    .SetEase(settingsEase)
+            );
 
-        cg.DOFade(0f, settingsDuration);
+            seq.Join(
+                cg.DOFade(0f, settingsDuration / 2)
+            );
+
+            seq.AppendCallback(() =>
+            {
+                cg.interactable = false;
+                cg.blocksRaycasts = false;
+                settingsPanel.gameObject.SetActive(false);
+            });
+        }
+
+        // ===== 2️⃣ Powrót LOGO TEXT =====
+        seq.Append(
+            logoText.DOAnchorPos(textStartPos, uiSlideTime)
+                .SetEase(Ease.OutBack)
+        );
+
+        // ===== 3️⃣ Powrót BOMBY =====
+        seq.Join(
+            logoBomb.DOAnchorPos(bombStartPos, uiSlideTime)
+                .SetEase(Ease.OutBack)
+        );
+
+        seq.Join(
+            logoBomb.DORotate(Vector3.zero, 0.3f)
+        );
+
+        seq.Join(
+            logoBomb.DOScale(Vector3.one, 0.3f)
+        );
+
+        // ===== 4️⃣ Powrót przycisków =====
+        seq.Join(
+       buttonsParent.DOAnchorPosX(buttonsParentStartPos.x, uiSlideTime)
+           .SetEase(Ease.OutBack)
+   );
+
+
+
+        // ===== 5️⃣ Idle bomby wraca =====
+        seq.OnComplete(() =>
+        {
+            StartBombIdle();
+        });
     }
 
 
