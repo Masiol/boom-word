@@ -108,7 +108,7 @@ public class SettingsPanelController : MonoBehaviour
             isAnimating = false;
         });
 
-        FindObjectOfType<MenuAnimation>().PlayBackFromSettings();
+       // FindObjectOfType<MenuAnimation>().PlayBackFromSettings();
     }
 
     public void Toggle()
