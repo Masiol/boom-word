@@ -104,6 +104,8 @@ public class MenuAnimation : MonoBehaviour
             .SetAutoKill(false)
             .Pause();
 
+        // 🔥 Wszystko startuje w tym samym momencie
+
         startSequence.Join(
             logoText.DOAnchorPosX(textStartPos.x + uiSlideDistance, uiSlideTime)
                 .SetEase(uiEase)
@@ -114,26 +116,28 @@ public class MenuAnimation : MonoBehaviour
                 .SetEase(uiEase)
         );
 
-        startSequence.Append(
-            logoBomb.DOScale(new Vector3(1.15f, 0.75f, 1f), 0.12f)
-        );
-
-        startSequence.Append(
-            logoBomb.DOScale(new Vector3(0.9f, 1.2f, 1f), 0.15f)
-        );
-
+        // 🔥 Bomb squash STARTS IMMEDIATELY
         startSequence.Join(
-            logoBomb.DOAnchorPosY(bombStartPos.y + jumpHeight, riseTime)
-                .SetEase(riseEase)
+            logoBomb.DOScale(new Vector3(1.15f, 0.75f, 1f), 0.08f)
         );
 
         startSequence.Append(
-            logoBomb.DOAnchorPosY(landingY, fallTime)
+            logoBomb.DOScale(new Vector3(0.9f, 1.2f, 1f), 0.1f)
+        );
+
+        // 🔥 Jump bez czekania
+        startSequence.Join(
+            logoBomb.DOAnchorPosY(bombStartPos.y + jumpHeight, 0.18f)
+                .SetEase(Ease.OutCubic)
+        );
+
+        startSequence.Append(
+            logoBomb.DOAnchorPosY(landingY, 0.45f)
                 .SetEase(fallEase)
         );
 
         startSequence.Join(
-            logoBomb.DOScale(Vector3.one, fallTime)
+            logoBomb.DOScale(Vector3.one, 0.45f)
         );
 
         startSequence.Join(
@@ -227,8 +231,10 @@ public class MenuAnimation : MonoBehaviour
             {
                 settingsPanel.gameObject.SetActive(true);
                 cg.alpha = 0f;
-                cg.interactable = false;
-                cg.blocksRaycasts = false;
+
+                // 🔥 WŁĄCZAMY OD RAZU
+                cg.interactable = true;
+                cg.blocksRaycasts = true;
             });
 
             settingsSequence.Append(
@@ -239,12 +245,6 @@ public class MenuAnimation : MonoBehaviour
             settingsSequence.Join(
                 cg.DOFade(1f, 0.3f)
             );
-
-            settingsSequence.AppendCallback(() =>
-            {
-                cg.interactable = true;
-                cg.blocksRaycasts = true;
-            });
         }
     }
 
