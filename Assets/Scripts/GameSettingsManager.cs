@@ -5,6 +5,8 @@ public static class GameSettingsManager
     private const string SOUND_KEY = "SoundEnabled";
     private const string VIBRATION_KEY = "VibrationEnabled";
     private const string BOMB_TIME_KEY = "BombTimeOption";
+    private const string PLAYERS_KEY = "PlayersCount";
+    private const string LANGUAGE_KEY = "GameLanguage";
 
     public static bool SoundEnabled
     {
@@ -26,16 +28,32 @@ public static class GameSettingsManager
         }
     }
 
-    // 0 = 30-60
-    // 1 = 60-90
-    // 2 = 90-120
-    // 3 = Random
     public static int BombTimeOption
     {
-        get => PlayerPrefs.GetInt(BOMB_TIME_KEY, 0); // domyœlnie 30-60
+        get => PlayerPrefs.GetInt(BOMB_TIME_KEY, 0);
         set
         {
             PlayerPrefs.SetInt(BOMB_TIME_KEY, value);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public static int PlayersCount
+    {
+        get => PlayerPrefs.GetInt(PLAYERS_KEY, 8);
+        set
+        {
+            PlayerPrefs.SetInt(PLAYERS_KEY, value);
+            PlayerPrefs.Save();
+        }
+    }
+
+    public static string Language
+    {
+        get => PlayerPrefs.GetString(LANGUAGE_KEY, "PL");
+        set
+        {
+            PlayerPrefs.SetString(LANGUAGE_KEY, value);
             PlayerPrefs.Save();
         }
     }
@@ -47,20 +65,8 @@ public static class GameSettingsManager
             case 0: return (30, 60);
             case 1: return (60, 90);
             case 2: return (90, 120);
-            case 3: return (30, 120); // random pe³ny zakres
+            case 3: return (30, 120);
             default: return (30, 60);
-        }
-    }
-
-    private const string PLAYERS_KEY = "PlayersCount";
-
-    public static int PlayersCount
-    {
-        get => PlayerPrefs.GetInt(PLAYERS_KEY, 8); // domyœlnie 8
-        set
-        {
-            PlayerPrefs.SetInt(PLAYERS_KEY, value);
-            PlayerPrefs.Save();
         }
     }
 }

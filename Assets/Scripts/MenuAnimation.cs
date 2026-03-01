@@ -18,22 +18,32 @@ public class MenuAnimation : MonoBehaviour
     [Header("Start Panel (Fade)")]
     public CanvasGroup startCanvasGroup;
 
+    [Header("Premium Button")]
+    public RectTransform premiumButton;
+    public float premiumIdleScale = 0.04f;
+    public float premiumIdleSpeed = 1.6f;
+
     [Header("Distances")]
     public float uiSlideDistance = 800f;
     public float jumpHeight = 300f;
     public float landingY = 0f;
     public float panelSlideDistance = 1200f;
 
+    [Header("Bomb Jump Settings")]
+    public float anticipationDown = 40f;
+    public float anticipationTime = 0.06f;
+    public float jumpPower = 1.15f;
+    public float jumpUpTime = 0.22f;
+    public float jumpDownTime = 0.38f;
+    public float landSquashScale = 1.2f;
+    public float landSquashTime = 0.08f;
+
     [Header("Timings")]
     public float uiSlideTime = 0.4f;
-    public float riseTime = 0.3f;
-    public float fallTime = 0.5f;
     public float panelSlideTime = 0.5f;
 
     [Header("Easing")]
     public Ease uiEase = Ease.InBack;
-    public Ease riseEase = Ease.OutExpo;
-    public Ease fallEase = Ease.InExpo;
     public Ease panelEase = Ease.OutCubic;
 
     Vector2 bombStartPos;
@@ -46,6 +56,10 @@ public class MenuAnimation : MonoBehaviour
 
     Tween bombIdleScale;
     Tween bombIdleRotate;
+    Tween premiumIdleTween;
+
+    public Ease bombEaseIn;
+    public Ease bombEaseOut;
 
     void Awake()
     {
@@ -58,6 +72,7 @@ public class MenuAnimation : MonoBehaviour
     void Start()
     {
         StartBombIdle();
+        StartPremiumIdle();
     }
 
     // =========================
@@ -104,8 +119,7 @@ public class MenuAnimation : MonoBehaviour
             .SetAutoKill(false)
             .Pause();
 
-        // 🔥 Wszystko startuje w tym samym momencie
-
+        // UI slide
         startSequence.Join(
             logoText.DOAnchorPosX(textStartPos.x + uiSlideDistance, uiSlideTime)
                 .SetEase(uiEase)
@@ -116,39 +130,58 @@ public class MenuAnimation : MonoBehaviour
                 .SetEase(uiEase)
         );
 
-        // 🔥 Bomb squash STARTS IMMEDIATELY
+        // 🔥 ANTICIPATION
         startSequence.Join(
-            logoBomb.DOScale(new Vector3(1.15f, 0.75f, 1f), 0.08f)
+            logoBomb.DOAnchorPosY(bombStartPos.y - anticipationDown, anticipationTime)
+                .SetEase(Ease.InQuad)
         );
 
+        startSequence.Join(
+            logoBomb.DOScale(new Vector3(1.2f, 0.8f, 1f), anticipationTime)
+        );
+
+        // 🔥 WYSTRZAŁ
         startSequence.Append(
-            logoBomb.DOScale(new Vector3(0.9f, 1.2f, 1f), 0.1f)
+            logoBomb.DOScale(new Vector3(0.85f, jumpPower, 1f), 0.1f)
         );
 
-        // 🔥 Jump bez czekania
         startSequence.Join(
-            logoBomb.DOAnchorPosY(bombStartPos.y + jumpHeight, 0.18f)
+            logoBomb.DOAnchorPosY(bombStartPos.y + jumpHeight, jumpUpTime)
                 .SetEase(Ease.OutCubic)
         );
 
+        // 🔥 OPADANIE
         startSequence.Append(
-            logoBomb.DOAnchorPosY(landingY, 0.45f)
-                .SetEase(fallEase)
+            logoBomb.DOAnchorPosY(landingY, jumpDownTime)
+                .SetEase(Ease.InCubic)
         );
 
         startSequence.Join(
-            logoBomb.DOScale(Vector3.one, 0.45f)
+            logoBomb.DOScale(Vector3.one, jumpDownTime)
         );
 
-        startSequence.Join(
+        // 🔥 LANDING SQUASH
+        startSequence.Append(
+            logoBomb.DOScale(new Vector3(landSquashScale, 0.85f, 1f), landSquashTime)
+        );
+
+        startSequence.Append(
+            logoBomb.DOScale(Vector3.one, 0.12f)
+                .SetEase(Ease.OutBack)
+        );
+
+        // Panel slide
+        startSequence.Insert(0.4f, (
             packagePanel.DOAnchorPosX(panelStartPos.x, panelSlideTime)
                 .SetEase(panelEase)
-        );
+        ));
     }
 
     public void PlayStart()
     {
         StopBombIdle();
+
+        startSequence.Restart();
 
         if (startCanvasGroup != null)
         {
@@ -168,33 +201,72 @@ public class MenuAnimation : MonoBehaviour
                     startCanvasGroup.blocksRaycasts = true;
                 });
         }
-
-        startSequence.PlayForward();
     }
 
     public void ReverseStart()
     {
-        startSequence.PlayBackwards();
+        StopBombIdle();
 
+        Sequence reverse = DOTween.Sequence();
+
+        // 🔥 Bomba znika OD RAZU (bardzo szybko)
+        reverse.Join(
+            logoBomb.DOScale(Vector3.zero, 0.08f)
+                .SetEase(bombEaseIn)
+        );
+
+        // 🔥 UI wraca równolegle
+        reverse.Join(
+            logoText.DOAnchorPosX(textStartPos.x, 0.35f)
+                .SetEase(Ease.OutCubic)
+        );
+
+        reverse.Join(
+            buttonsParent.DOAnchorPosX(buttonsStartPos.x, 0.35f)
+                .SetEase(Ease.OutCubic)
+        );
+
+        reverse.Join(
+            packagePanel.DOAnchorPosX(panelStartPos.x + panelSlideDistance, 0.35f)
+                .SetEase(Ease.InBack)
+        );
+
+        // 🔥 Reset pozycji po zniknięciu
+        reverse.Insert(0.08f, DOTween.Sequence().AppendCallback(() =>
+        {
+            logoBomb.anchoredPosition = bombStartPos;
+            logoBomb.localRotation = Quaternion.identity;
+        }));
+
+        // 🔥 Pojawienie z popem po powrocie UI
+        reverse.Insert(0.1f,
+            logoBomb.DOScale(1.15f, 0.18f)
+                .SetEase(bombEaseOut)
+        );
+
+        reverse.Append(
+            logoBomb.DOScale(1f, 0.1f)
+        );
+
+        // Fade panel
         if (startCanvasGroup != null)
         {
             startCanvasGroup.DOKill();
-
             startCanvasGroup.interactable = false;
             startCanvasGroup.blocksRaycasts = false;
 
             startCanvasGroup
-                .DOFade(0f, 0.2f)
-                .SetEase(Ease.InQuad)
+                .DOFade(0f, 0.15f)
                 .OnComplete(() =>
                 {
                     startCanvasGroup.gameObject.SetActive(false);
                 });
         }
 
-        startSequence.OnRewind(() =>
+        reverse.OnComplete(() =>
         {
             StartBombIdle();
+            StartPremiumIdle();
         });
     }
 
@@ -231,8 +303,6 @@ public class MenuAnimation : MonoBehaviour
             {
                 settingsPanel.gameObject.SetActive(true);
                 cg.alpha = 0f;
-
-                // 🔥 WŁĄCZAMY OD RAZU
                 cg.interactable = true;
                 cg.blocksRaycasts = true;
             });
@@ -265,10 +335,11 @@ public class MenuAnimation : MonoBehaviour
                 CanvasGroup cg = GetOrAddCanvasGroup(settingsPanel);
                 cg.interactable = false;
                 cg.blocksRaycasts = false;
-                settingsPanel.gameObject.SetActive(false);
+               // settingsPanel.gameObject.SetActive(false);
             }
 
             StartBombIdle();
+            StartPremiumIdle();
         });
     }
 
@@ -279,7 +350,7 @@ public class MenuAnimation : MonoBehaviour
     void StartBombIdle()
     {
         bombIdleScale = logoBomb
-            .DOScale(0.9f, 1.2f)
+            .DOScale(1.1f, 1.2f)
             .SetEase(Ease.InOutSine)
             .SetLoops(-1, LoopType.Yoyo);
 
@@ -293,6 +364,21 @@ public class MenuAnimation : MonoBehaviour
     {
         bombIdleScale?.Kill();
         bombIdleRotate?.Kill();
+       // premiumIdleTween?.Kill();
+    }
+
+    void StartPremiumIdle()
+    {
+        if (premiumButton == null) return;
+
+        premiumIdleTween?.Kill();
+
+      /*  premiumButton.localScale = Vector3.one * 1.05f;
+
+        premiumIdleTween = premiumButton
+            .DOScale(1.1f, premiumIdleSpeed)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);*/
     }
 
     // =========================
@@ -311,23 +397,8 @@ public class MenuAnimation : MonoBehaviour
     // UI BUTTON HOOKS
     // =========================
 
-    public void OnStartClicked()
-    {
-        PlayStart();
-    }
-
-    public void OnBackFromStart()
-    {
-        ReverseStart();
-    }
-
-    public void OnSettingsClicked()
-    {
-        PlaySettings();
-    }
-
-    public void OnBackFromSettings()
-    {
-        ReverseSettings();
-    }
+    public void OnStartClicked() => PlayStart();
+    public void OnBackFromStart() => ReverseStart();
+    public void OnSettingsClicked() => PlaySettings();
+    public void OnBackFromSettings() => ReverseSettings();
 }
