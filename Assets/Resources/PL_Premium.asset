@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3893d833608940a42a91c40207ee5045, type: 3}
+  m_Name: PL_Premium
+  m_EditorClassIdentifier: Assembly-CSharp::LanguagePackSO
+  languageCode: PL
+  endings:
+  - Rk
+  - Aliz
+  - Czo
+  - Pan
+  - Graf
+  - Zn
+  - Ryc
+  - Sad
+  - Ewi
+  - By
+  - Kt
+  - Iz
+  - Ok
+  - Pow
+  - Ho
+  - Aw
+  - Owa
+  - Zys
+  - Kow
+  - Sto
+  - Pad
+  - Ru
+  - Ym
+  - Est
+  - Owi
+  - Tk
+  - Ord
+  - Yk
+  - Nist
+  - As
+  - Zno
+  - Mier
+  - Kos
+  - Ec
+  - Raf
+  - Ab
+  - "\uFFFDa"
+  - "A\uFFFD"
+  - Por
+  - Ty
+  - Az
+  - Trz
+  - Ser
+  - Szo
+  - "\uFFFDl"
+  - Jo
+  - Tar
+  - Mot
+  - Lin
+  - Cel
+  - Pro
+  - Tra
+  - Ant
+  - Tor
+  - Pol
+  - Pre
+  - Str
+  - Sta
+  - Min
+  - Mak
+  - Ka
+  - Po
+  - Ma
+  - La
+  - Ko
+  - Wo
+  - Ro
+  - Da
+  - Sz
+  - Cz
+  - Rz
+  - Ter
+  - Kon
+  - Bar
+  - Lic
+  placements:
+  - "Nie na ko\u0144cu"
+  - "Mo\u017Ce by\u0107 wsz\u0119dzie"
+  - "Nie na pocz\u0105tku "

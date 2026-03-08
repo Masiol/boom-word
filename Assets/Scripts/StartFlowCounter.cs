@@ -51,17 +51,18 @@ public class StartFlowController : MonoBehaviour
 
     IEnumerator Countdown()
     {
+        GameManager.Instance.StartGame();
         yield return new WaitForSeconds(0.5f);
         countdownParent.localScale = Vector3.zero;
         countdownParent.DOScale(1f, 0.25f).SetEase(Ease.OutBack);
 
         infoText.text = GetRandomText();
-        infoText.DOFade(1, 0.2f);
+        infoText.DOFade(1, 0.3f).SetDelay(0.25f);
 
-        for (int i = 5; i >= 0; i--)
+        for (int i = 3; i >= 0; i--)
         {
             countdownText.text = i.ToString();
-
+            SoundManager.Instance.Play(SoundID.Countdown);
             // 🔥 animacja cyfry
             countdownText.transform.localScale = Vector3.zero;
 
@@ -80,13 +81,13 @@ public class StartFlowController : MonoBehaviour
             );
 
             // jeśli 0 → mocniejszy efekt
-            if (i == 0)
+          /*  if (i == 0)
             {
                 seq.Append(
                     countdownText.transform
                         .DOPunchScale(Vector3.one * 0.25f, 0.3f, 6, 0.6f)
                 );
-            }
+            }*/
 
             yield return new WaitForSeconds(1f);
         }
@@ -95,7 +96,8 @@ public class StartFlowController : MonoBehaviour
             .SetEase(Ease.InBack)
             .OnComplete(() =>
             {
-                GameManager.Instance.StartGame();
+                GameManager.Instance.TakeRandomPhrase();
+                infoText.DOFade(0, 0.2f);
             });
     }
 
@@ -106,18 +108,37 @@ public class StartFlowController : MonoBehaviour
         switch (GameSettingsManager.Language)
         {
             case "EN":
-                texts.AddRange(new[] { "Prepare...", "Starting...", "Get ready..." });
+                texts.AddRange(new[]
+                {
+                "You start!",
+                "Pass the phone to the person on your left.",
+                "Pass the phone to the person on your right.",
+                "Pass the phone to the person opposite you."
+            });
                 break;
 
             case "DE":
-                texts.AddRange(new[] { "Bereit...", "Startet...", "Los geht's..." });
+                texts.AddRange(new[]
+                {
+                "Du fängst an!",
+                "Gib das Handy der Person links von dir.",
+                "Gib das Handy der Person rechts von dir.",
+                "Gib das Handy der Person dir gegenüber."
+            });
                 break;
 
-            default:
-                texts.AddRange(new[] { "Przygotuj się...", "Startujemy...", "Uwaga..." });
+            default: // PL
+                texts.AddRange(new[]
+                {
+                "Ty zaczynasz!",
+                "Podaj telefon osobie po lewej.",
+                "Podaj telefon osobie po prawej.",
+                "Podaj telefon osobie naprzeciwko."
+            });
                 break;
         }
 
         return texts[Random.Range(0, texts.Count)];
     }
+
 }

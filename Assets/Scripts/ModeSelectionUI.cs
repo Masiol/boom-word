@@ -32,6 +32,7 @@ public class ModeSelectionUI : MonoBehaviour
     void SelectNormal()
     {
         UpdateVisual(true, false, true);
+        GameManager.Instance.SetGameMode(GameMode.Normal);
         StartFlowController.Instance.ShowStartButton();
     }
 
@@ -41,6 +42,7 @@ public class ModeSelectionUI : MonoBehaviour
             return;
 
         UpdateVisual(false, true, true);
+        GameManager.Instance.SetGameMode(GameMode.Full);
         StartFlowController.Instance.ShowStartButton();
     }
 

@@ -83,7 +83,7 @@ public class GameController : MonoBehaviour
 
         yield return new WaitForSeconds(time);
 
-        ShowRandomPhrase();
+    //    ShowRandomPhrase();
 
         button1Transform.DOKill();
         button1Transform.localScale = Vector3.one;
@@ -91,7 +91,7 @@ public class GameController : MonoBehaviour
         isRunning = false;
     }
 
-    void ShowRandomPhrase()
+   /* void ShowRandomPhrase()
     {
         string lang = PlayerPrefs.GetString("SelectedLanguage", "EN");
 
@@ -115,5 +115,5 @@ public class GameController : MonoBehaviour
                 .DOScale(1f, phraseScaleTime)
                 .SetEase(Ease.OutBack)
         );
-    }
+    }*/
 }
