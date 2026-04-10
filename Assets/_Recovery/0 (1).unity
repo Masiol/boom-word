@@ -1420,8 +1420,6 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: ad1f30198bca42546ab2228924bd9ecc, type: 3}
   - id: 6
     clip: {fileID: 8300000, guid: 54204ab4012897e4b93746d13f0799c9, type: 3}
-  - id: 2
-    clip: {fileID: 8300000, guid: de0d30954ba6dbf49bd06c1458b81250, type: 3}
   sfxSource: {fileID: 1817603492}
   loopSource: {fileID: 1886632531}
 --- !u!4 &379405365

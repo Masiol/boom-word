@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -46,6 +46,8 @@ public class GameManager : MonoBehaviour
 
     Tween bombTween;
 
+    public Button backButton;
+
     void Awake()
     {
         phraseParent.DOScale(0f, 0);
@@ -53,7 +55,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+           // DontDestroyOnLoad(gameObject);
         }
         else
             Destroy(gameObject);
@@ -93,7 +95,7 @@ public class GameManager : MonoBehaviour
                 pitch = x;
                 SoundManager.Instance.SetLoopPitch(pitch);
             },
-            1.15f,
+            1.08f,
             1.5f
         );
     }
@@ -118,7 +120,15 @@ public class GameManager : MonoBehaviour
         bombTimer = BombTime;
         bombAccelerated = false;
 
+        // start od ciszy
+        SoundManager.Instance.loopSource.volume = 0f;
+
         SoundManager.Instance.PlayLoop(SoundID.ClockLoop);
+
+        // płynne zwiększenie głośności
+        SoundManager.Instance.loopSource
+            .DOFade(1f, 1f)
+            .SetEase(Ease.Linear);
 
         StartBombAnimation();
     }
@@ -137,15 +147,64 @@ public class GameManager : MonoBehaviour
     }
     void BombExplode()
     {
+        ExplodeWithEffect();
+        Debug.Log("BOOM");
+    }
+    void ExplodeWithEffect()
+    {
         bombStarted = false;
 
         if (bombTween != null)
             bombTween.Kill();
 
         SoundManager.Instance.StopLoop();
-        SoundManager.Instance.Play(SoundID.BombExplode);
 
-        Debug.Log("BOOM");
+        Vector3 startScale = bombTransform.localScale;
+        Image img = bombTransform.GetComponent<Image>();
+
+        Sequence seq = DOTween.Sequence();
+
+        // 🔺 napięcie przed wybuchem
+        seq.Append(
+            bombTransform.DOScale(startScale * 1.3f, 0.25f)
+            .SetEase(Ease.OutQuad)
+        );
+
+        // 💥 DŹWIĘK idealnie w timing
+        seq.AppendCallback(() =>
+        {
+            SoundManager.Instance.Play(SoundID.BombExplode);
+        });
+
+        // 💥 blast (główna eksplozja)
+        seq.Append(
+            bombTransform.DOScale(startScale * 2.5f, 0.4f)
+            .SetEase(Ease.OutCubic)
+        );
+
+        // 📳 lekki shake dla efektu
+        seq.Join(
+            bombTransform.DOShakeScale(0.2f, 0.3f, 10, 90)
+        );
+
+        // 👻 fade out (jeśli masz Image)
+        if (img != null)
+        {
+            seq.Join(img.DOFade(0f, 0.2f));
+        }
+
+        // cleanup
+        seq.OnComplete(() =>
+        {
+            bombTransform.localScale = Vector3.zero;
+
+            if (img != null)
+            {
+                Color c = img.color;
+                c.a = 1f;
+                img.color = c;
+            }
+        });
     }
     public PhraseElement GetRandomPhrase()
     {
@@ -225,5 +284,58 @@ public class GameManager : MonoBehaviour
         Language = GameSettingsManager.Language;
 
         Debug.Log("Bomb time: " + BombTime);
+    }
+
+    public void SkipPhrase()
+    {
+        // 🔄 reset timera
+        bombTimer = BombTime;
+        bombAccelerated = false;
+
+        // 🔊 reset dźwięku
+        SoundManager.Instance.StopLoop();
+
+        SoundManager.Instance.loopSource.volume = 0f;
+        SoundManager.Instance.PlayLoop(SoundID.ClockLoop);
+
+        SoundManager.Instance.loopSource
+            .DOFade(1f, 0.3f)
+            .SetEase(Ease.Linear);
+
+        // reset pitch
+        SoundManager.Instance.SetLoopPitch(1f);
+
+        // 💣 reset animacji bomby
+        if (bombTween != null)
+            bombTween.Kill();
+
+        StartBombAnimation();
+
+        // 📝 nowa fraza
+        PhraseElement phrase = GetRandomPhrase();
+
+        if (phrase == null)
+            return;
+
+        wordText.text = phrase.word;
+        placementText.text = phrase.placement;
+
+        // animacja jak przy normalnym losowaniu
+        phraseParent.localScale = Vector3.zero;
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(
+            phraseParent.DOScale(1.2f, 0.25f)
+            .SetEase(Ease.OutBack)
+        );
+
+        seq.Append(
+            phraseParent.DOScale(1f, 0.15f)
+            .SetEase(Ease.OutQuad)
+        );
+
+        seq.Join(wordText.DOFade(1f, 0.2f));
+        seq.Join(placementText.DOFade(1f, 0.2f));
     }
 }

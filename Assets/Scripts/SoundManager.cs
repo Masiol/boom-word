@@ -8,7 +8,8 @@ public enum SoundID
     BombExplode,
     ClockLoop,
     Swish,
-    Countdown
+    Countdown,
+    FinishCountdown
 }
 
 public class SoundManager : MonoBehaviour
@@ -96,6 +97,26 @@ public class SoundManager : MonoBehaviour
             loopSource.clip = clip;
             loopSource.loop = true;
             loopSource.Play();
+        }
+    }
+
+    public void Play(SoundID id, float pitch)
+    {
+        if (!GameSettingsManager.SoundEnabled)
+            return;
+
+        if (soundDict.TryGetValue(id, out AudioClip clip))
+        {
+            AudioSource source = gameObject.AddComponent<AudioSource>();
+            source.clip = clip;
+            source.pitch = pitch;
+            source.Play();
+
+            Destroy(source, clip.length);
+        }
+        else
+        {
+            Debug.LogWarning("Sound not found: " + id);
         }
     }
 

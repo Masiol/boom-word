@@ -9,4 +9,9 @@ public class PlayButtonSound : MonoBehaviour, IPointerDownHandler
     {
         SoundManager.Instance.Play(soundId);
     }
+
+    public void PlaySound(string soundId)
+    {
+        SoundManager.Instance.Play(soundId);
+    }
 }

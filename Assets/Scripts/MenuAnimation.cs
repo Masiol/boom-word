@@ -73,6 +73,7 @@ public class MenuAnimation : MonoBehaviour
     {
         StartBombIdle();
         StartPremiumIdle();
+        
     }
 
     // =========================

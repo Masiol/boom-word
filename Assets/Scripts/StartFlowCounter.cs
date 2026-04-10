@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class StartFlowController : MonoBehaviour
 {
@@ -14,6 +13,9 @@ public class StartFlowController : MonoBehaviour
     public Transform countdownParent;
     public Text countdownText;
     public Text infoText;
+
+    public Button backButton;
+    public ReloadSceneButton reloadSceneButton;
 
     [SerializeField] private RectTransform panel;
     [SerializeField] private float shownY = 0f;
@@ -27,6 +29,8 @@ public class StartFlowController : MonoBehaviour
         startButton.localScale = Vector3.zero;
         countdownParent.localScale = Vector3.zero;
         infoText.DOFade(0, 0);
+
+        backButton.onClick.AddListener(()=> FindObjectOfType<MenuAnimation>().ReverseStart());
     }
 
     public void ShowStartButton()
@@ -41,14 +45,21 @@ public class StartFlowController : MonoBehaviour
     public void OnStartClicked()
     {
         startButton.DOScale(0f, 0.2f);
+
+        // 🧹 wyczyść wszystkie akcje przycisku back
+        backButton.onClick.RemoveAllListeners();
+
         StartCoroutine(Countdown());
         gameChoosePanel.DOScale(0f, 0.12f).SetEase(Ease.OutBack);
 
         panel
             .DOAnchorPosY(shownY, duration)
             .SetEase(showEase);
-    }
 
+        backButton.onClick.AddListener(() => FadeManager.Instance.FadeInAndReload());
+        backButton.onClick.AddListener(() => SoundManager.Instance.StopLoop());
+
+    }
     IEnumerator Countdown()
     {
         GameManager.Instance.StartGame();
@@ -62,8 +73,13 @@ public class StartFlowController : MonoBehaviour
         for (int i = 3; i >= 0; i--)
         {
             countdownText.text = i.ToString();
-            SoundManager.Instance.Play(SoundID.Countdown);
-            // 🔥 animacja cyfry
+
+            // 🎵 narastający pitch
+            float pitch = 1f + (3 - i) * 0.08f;
+            Debug.Log(pitch);
+            SoundManager.Instance.Play(SoundID.Countdown, pitch);
+
+            // animacja cyfry
             countdownText.transform.localScale = Vector3.zero;
 
             Sequence seq = DOTween.Sequence();
@@ -80,17 +96,11 @@ public class StartFlowController : MonoBehaviour
                     .SetEase(Ease.OutQuad)
             );
 
-            // jeśli 0 → mocniejszy efekt
-          /*  if (i == 0)
-            {
-                seq.Append(
-                    countdownText.transform
-                        .DOPunchScale(Vector3.one * 0.25f, 0.3f, 6, 0.6f)
-                );
-            }*/
-
             yield return new WaitForSeconds(1f);
         }
+        //yield return new WaitForSeconds(0.2f);
+        SoundManager.Instance.Play(SoundID.FinishCountdown);
+        
 
         countdownParent.DOScale(0f, 0.25f)
             .SetEase(Ease.InBack)
