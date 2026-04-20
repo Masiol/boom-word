@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
         //SceneManager.LoadScene("GameScene");
     }
 
-    void StartBomb()
+    void StartBomb(bool nextRound)
     {
         bombStarted = true;
         bombTimer = BombTime;
@@ -130,24 +130,51 @@ public class GameManager : MonoBehaviour
             .DOFade(1f, 1f)
             .SetEase(Ease.Linear);
 
-        StartBombAnimation();
+        StartBombAnimation(nextRound);
     }
 
-    void StartBombAnimation()
+    void StartBombAnimation(bool nextRound)
     {
         if (bombTween != null)
             bombTween.Kill();
 
-        bombTransform.localScale = Vector3.one;
+        bombTransform.DOKill();
 
-        bombTween = bombTransform
-            .DOScale(1.1f, 0.65f)
-            .SetEase(Ease.InOutSine)
-            .SetLoops(-1, LoopType.Yoyo);
+        if (!nextRound)
+        {
+            bombTransform.localScale = Vector3.one;
+
+            bombTween = bombTransform
+                .DOScale(1.1f, 0.65f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(-1, LoopType.Yoyo);
+        }
+        else
+        {
+            bombTransform.localScale = Vector3.zero;
+
+            bombTransform
+                .DOScale(1f, 0.25f)
+                .SetEase(Ease.OutBack)
+                .SetDelay(0.35f) // 👈 delay pojawienia
+                .OnComplete(() =>
+                {
+                    bombTween = bombTransform
+                        .DOScale(1.1f, 0.65f)
+                        .SetEase(Ease.InOutSine)
+                        .SetLoops(-1, LoopType.Yoyo);
+                });
+        }
     }
     void BombExplode()
     {
+
+        phraseParent.GetComponent<CanvasGroup>().DOFade(0, 0.25f).SetDelay(0.4f);
+    
+
+
         ExplodeWithEffect();
+        FindObjectOfType<DynamicGridButton>().AnimateButtonPanel();
         Debug.Log("BOOM");
     }
     void ExplodeWithEffect()
@@ -235,11 +262,11 @@ public class GameManager : MonoBehaviour
         return new PhraseElement(ending, placement);
     }
 
-    public void TakeRandomPhrase()
+    public void TakeRandomPhrase(bool nextRound)
     {
         if (!bombStarted)
         {
-            StartBomb();
+            StartBomb(nextRound);
         }
 
         PhraseElement phrase = GetRandomPhrase();
@@ -309,7 +336,7 @@ public class GameManager : MonoBehaviour
         if (bombTween != null)
             bombTween.Kill();
 
-        StartBombAnimation();
+        StartBombAnimation(false);
 
         // 📝 nowa fraza
         PhraseElement phrase = GetRandomPhrase();
@@ -337,5 +364,53 @@ public class GameManager : MonoBehaviour
 
         seq.Join(wordText.DOFade(1f, 0.2f));
         seq.Join(placementText.DOFade(1f, 0.2f));
+    }
+
+
+    public void StartNextRound()
+    {
+        Debug.Log("NEXT ROUND");
+        DynamicGridButton grid = FindObjectOfType<DynamicGridButton>();
+        if (grid != null)
+        {
+            grid.NextRound();
+        }
+
+        // 🔄 reset bomby
+        bombStarted = false;
+        bombAccelerated = false;
+        bombTimer = 0;
+
+        if (bombTween != null)
+            bombTween.Kill();
+
+       // bombTransform.localScale = Vector3.one;
+
+        SoundManager.Instance.StopLoop();
+        SoundManager.Instance.SetLoopPitch(1f);
+
+        // 🔄 reset fraz UI
+   //     bombTransform
+   // .DOScale(0f, 0.1f);
+
+
+        //phraseParent
+          //  .DOScale(0f, 0.1f);
+
+
+        CanvasGroup cg = phraseParent.GetComponent<CanvasGroup>();
+        if (cg != null)
+            cg.alpha = 1f;
+
+        // 🔄 reset przycisków
+
+       //    grid.ResetButtons();
+        
+
+        // 🔄 nowy czas bomby
+        BombTime = Random.Range(BombMinTime, BombMaxTime + 1);
+
+        // 🚀 start nowej rundy
+        TakeRandomPhrase(true);
     }
 }

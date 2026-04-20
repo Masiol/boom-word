@@ -58,6 +58,8 @@ public class StartFlowController : MonoBehaviour
 
         backButton.onClick.AddListener(() => FadeManager.Instance.FadeInAndReload());
         backButton.onClick.AddListener(() => SoundManager.Instance.StopLoop());
+        FindObjectOfType<DynamicGridButton>().StartGenerate();
+
 
     }
     IEnumerator Countdown()
@@ -106,7 +108,7 @@ public class StartFlowController : MonoBehaviour
             .SetEase(Ease.InBack)
             .OnComplete(() =>
             {
-                GameManager.Instance.TakeRandomPhrase();
+                GameManager.Instance.TakeRandomPhrase(false);
                 infoText.DOFade(0, 0.2f);
             });
     }
