@@ -1,0 +1,87 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Language_pl
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: pl
+  m_SharedData: {fileID: 11400000, guid: 36b4dd9b3e0896c4297c2104b09ae781, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 183006826496
+    m_Localized: Graj
+    m_Metadata:
+      m_Items: []
+  - m_Id: 296282394624
+    m_Localized: Ustawienia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 336757428224
+    m_Localized: "Jak gra\u0107?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1166000689152
+    m_Localized: Paczka premium
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1136246296576
+    m_Localized: 75 Fraz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1038925860864
+    m_Localized: 20 Fraz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 850840686592
+    m_Localized: Paczka podstawowa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28497851355136
+    m_Localized: Ustawienia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28645159505920
+    m_Localized: "D\u017Awi\u0119ki"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28676331573248
+    m_Localized: Wibracje
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28730882691072
+    m_Localized: Czas bomby
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28766123233280
+    m_Localized: Gracze
+    m_Metadata:
+      m_Items: []
+  - m_Id: 28864303501312
+    m_Localized: Losowo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 34832500297728
+    m_Localized: Start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 57835204284416
+    m_Localized: "Pomi\u0144"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 58456170991616
+    m_Localized: "Nast\u0119pna runda"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

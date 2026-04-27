@@ -50,7 +50,20 @@ public static class GameSettingsManager
 
     public static string Language
     {
-        get => PlayerPrefs.GetString(LANGUAGE_KEY, "PL");
+        get
+        {
+            string lang = PlayerPrefs.GetString(LANGUAGE_KEY, "EN");
+
+            // ?? migracja starych danych (int ? string)
+            switch (lang)
+            {
+                case "0": return "EN";
+                case "1": return "PL";
+                case "2": return "DE";
+            }
+
+            return lang;
+        }
         set
         {
             PlayerPrefs.SetString(LANGUAGE_KEY, value);

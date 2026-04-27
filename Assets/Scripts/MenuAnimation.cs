@@ -61,12 +61,19 @@ public class MenuAnimation : MonoBehaviour
     public Ease bombEaseIn;
     public Ease bombEaseOut;
 
+    [Header("How To Play Panel")]
+    public RectTransform howToPlayPanel;
+    CanvasGroup howToPlayCG;
+
+    Sequence howToPlaySequence;
+
     void Awake()
     {
         SaveInitialPositions();
         PreparePanels();
         BuildStartSequence();
         BuildSettingsSequence();
+        BuildHowToPlaySequence();
     }
 
     void Start()
@@ -108,6 +115,59 @@ public class MenuAnimation : MonoBehaviour
             startCanvasGroup.blocksRaycasts = false;
             startCanvasGroup.gameObject.SetActive(false);
         }
+
+        if (howToPlayPanel != null)
+        {
+            howToPlayPanel.localScale = Vector3.zero;
+
+            howToPlayCG = GetOrAddCanvasGroup(howToPlayPanel);
+            howToPlayCG.alpha = 0f;
+            howToPlayCG.interactable = false;
+            howToPlayCG.blocksRaycasts = false;
+
+            howToPlayPanel.gameObject.SetActive(false);
+        }
+    }
+    public void PlayHowToPlay()
+    {
+        StopBombIdle();
+        howToPlaySequence.Restart();
+    }
+
+    public void ReverseHowToPlay()
+    {
+        Sequence reverse = DOTween.Sequence();
+
+        reverse.Append(
+            howToPlayPanel.DOScale(0.9f, 0.15f)
+        );
+
+        reverse.Join(
+            howToPlayCG.DOFade(0f, 0.15f)
+        );
+
+        reverse.OnComplete(() =>
+        {
+            howToPlayPanel.gameObject.SetActive(false);
+            howToPlayCG.interactable = false;
+            howToPlayCG.blocksRaycasts = false;
+
+            StartBombIdle();
+            StartPremiumIdle();
+        });
+
+        reverse.Join(
+          buttonsParent.DOAnchorPosX(buttonsStartPos.x, 0.35f)
+              .SetEase(Ease.OutCubic)
+      );
+        reverse.Join(
+            logoText.DOAnchorPosX(textStartPos.x, 0.35f)
+                .SetEase(Ease.OutCubic)
+        );
+        reverse.Join(
+            logoBomb.DOAnchorPosX(bombStartPos.x, 0.35f)
+                .SetEase(Ease.OutCubic)
+        );
     }
 
     // =========================
@@ -176,6 +236,56 @@ public class MenuAnimation : MonoBehaviour
             packagePanel.DOAnchorPosX(panelStartPos.x, panelSlideTime)
                 .SetEase(panelEase)
         ));
+    }
+
+    void BuildHowToPlaySequence()
+    {
+        howToPlaySequence = DOTween.Sequence()
+            .SetAutoKill(false)
+            .Pause();
+
+        // UI wyjeżdża
+        howToPlaySequence.Join(
+            logoText.DOAnchorPosX(textStartPos.x + uiSlideDistance, uiSlideTime)
+                .SetEase(uiEase)
+        );
+
+        howToPlaySequence.Join(
+            buttonsParent.DOAnchorPosX(buttonsStartPos.x - uiSlideDistance, uiSlideTime)
+                .SetEase(uiEase)
+        );
+
+        // 🔥 Bomba WYJEŻDŻA (jak settings)
+        howToPlaySequence.Join(
+            logoBomb.DOAnchorPosX(bombStartPos.x + uiSlideDistance, uiSlideTime)
+                .SetEase(uiEase)
+        );
+
+        // Panel pojawia się po chwili
+        howToPlaySequence.AppendCallback(() =>
+        {
+            howToPlayPanel.gameObject.SetActive(true);
+            howToPlayCG.alpha = 0f;
+            howToPlayPanel.localScale = Vector3.zero;
+
+            howToPlayCG.interactable = true;
+            howToPlayCG.blocksRaycasts = true;
+        });
+
+        // 🔥 POP IN
+        howToPlaySequence.Append(
+            howToPlayPanel.DOScale(1.05f, 0.25f)
+                .SetEase(Ease.OutBack)
+        );
+
+        howToPlaySequence.Join(
+            howToPlayCG.DOFade(1f, 0.2f)
+        );
+
+        howToPlaySequence.Append(
+            howToPlayPanel.DOScale(1f, 0.1f)
+        );
+       
     }
 
     public void PlayStart()

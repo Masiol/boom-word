@@ -13,11 +13,28 @@ MonoBehaviour:
   m_Name: EN_Normal
   m_EditorClassIdentifier: Assembly-CSharp::LanguagePackSO
   languageCode: EN
-  premium: 0
-  elements:
-  - word: Test1
-    placement: Test111
-  - word: Test2
-    placement: Test222
-  - word: Test3
-    placement: Test333
+  endings:
+  - re
+  - di
+  - ta
+  - are
+  - le
+  - ve
+  - nt
+  - he
+  - st
+  - lo
+  - is
+  - an
+  - th
+  - sh
+  - om
+  - in
+  - ing
+  - ed
+  - er
+  - ly
+  placements:
+  - Not at start
+  - Can be anywhere
+  - Not at end

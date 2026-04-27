@@ -13,11 +13,78 @@ MonoBehaviour:
   m_Name: DE_Premium
   m_EditorClassIdentifier: Assembly-CSharp::LanguagePackSO
   languageCode: DE
-  premium: 1
-  elements:
-  - word: Test1
-    placement: Test111
-  - word: Test2
-    placement: Test222
-  - word: Test3
-    placement: Test333
+  endings:
+  - ho
+  - ib
+  - gk
+  - ck
+  - ke
+  - id
+  - eg
+  - pie
+  - "t\xE4"
+  - ut
+  - ed
+  - sche
+  - st
+  - rr
+  - rz
+  - te
+  - ze
+  - rv
+  - au
+  - ro
+  - ld
+  - us
+  - ec
+  - ti
+  - ei
+  - ub
+  - de
+  - io
+  - to
+  - tsc
+  - nd
+  - nz
+  - sc
+  - si
+  - en
+  - ue
+  - ll
+  - du
+  - ill
+  - et
+  - lte
+  - ss
+  - hle
+  - ri
+  - ne
+  - tei
+  - ni
+  - ag
+  - hs
+  - nt
+  - ie
+  - ir
+  - ru
+  - nh
+  - rl
+  - ust
+  - er
+  - ff
+  - gu
+  - rt
+  - ren
+  - nu
+  - gke
+  - hn
+  - as
+  - fe
+  - ide
+  - ra
+  - ma
+  - sa
+  placements:
+  - Nicht am Ende
+  - "Kann \xFCberall sein"
+  - Nicht am Anfang

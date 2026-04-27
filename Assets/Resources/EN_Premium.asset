@@ -13,11 +13,83 @@ MonoBehaviour:
   m_Name: EN_Premium
   m_EditorClassIdentifier: Assembly-CSharp::LanguagePackSO
   languageCode: EN
-  premium: 1
-  elements:
-  - word: Test1
-    placement: Test111
-  - word: Test2
-    placement: Test222
-  - word: Test3
-    placement: Test333
+  endings:
+  - oo
+  - re
+  - og
+  - ur
+  - di
+  - ect
+  - enc
+  - ta
+  - ctio
+  - are
+  - gh
+  - le
+  - ve
+  - ti
+  - nte
+  - nt
+  - he
+  - st
+  - lo
+  - rea
+  - is
+  - ran
+  - tic
+  - and
+  - sto
+  - ph
+  - ou
+  - rt
+  - pan
+  - th
+  - sho
+  - om
+  - ct
+  - an
+  - sti
+  - ap
+  - lit
+  - si
+  - ad
+  - se
+  - rm
+  - ste
+  - ant
+  - rat
+  - ac
+  - rep
+  - nde
+  - te
+  - ri
+  - her
+  - ll
+  - rs
+  - in
+  - ho
+  - lat
+  - anc
+  - at
+  - ica
+  - ge
+  - mi
+  - ing
+  - ed
+  - er
+  - est
+  - ly
+  - ful
+  - less
+  - ment
+  - ness
+  - tion
+  - sion
+  - able
+  - ible
+  - al
+  - ous
+  placements:
+  - Not at start
+  - Can be anywhere
+  - Not at end

@@ -13,11 +13,26 @@ MonoBehaviour:
   m_Name: DE_Normal
   m_EditorClassIdentifier: Assembly-CSharp::LanguagePackSO
   languageCode: DE
-  premium: 0
-  elements:
-  - word: Test1
-    placement: Test111
-  - word: Test2
-    placement: Test222
-  - word: Test3
-    placement: Test333
+  endings:
+  - er
+  - en
+  - te
+  - de
+  - ne
+  - st
+  - nd
+  - ei
+  - ie
+  - ra
+  - ko
+  - mi
+  - pa
+  - fa
+  - bi
+  - ro
+  - no
+  - ti
+  placements:
+  - Nicht am Ende
+  - "Kann \xFCberall sein"
+  - Nicht am Anfang
