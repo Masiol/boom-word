@@ -82,6 +82,10 @@ MonoBehaviour:
     m_Localized: "Nast\u0119pna runda"
     m_Metadata:
       m_Items: []
+  - m_Id: 2937520837791744
+    m_Localized: 'Nasze aplikacje:'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

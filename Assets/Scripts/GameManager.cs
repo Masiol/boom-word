@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
     [Header("Bomb")]
     public RectTransform bombTransform;
 
+   public List<string> usedEndings = new List<string>();
+
     Tween bombTween;
 
     public Button backButton;
@@ -254,10 +256,33 @@ public class GameManager : MonoBehaviour
             return null;
         }
 
-        string ending = pack.endings[Random.Range(0, pack.endings.Count)];
+        int maxUnique = premium ? 45 : 15;
+
+        // 🔥 reset jeśli przekroczono limit
+        if (usedEndings.Count >= maxUnique)
+        {
+            usedEndings.Clear();
+        }
+
+        // 🔥 filtrujemy tylko nieużyte
+        List<string> available = pack.endings
+            .Where(e => !usedEndings.Contains(e))
+            .ToList();
+
+        // fallback (gdyby coś poszło nie tak)
+        if (available.Count == 0)
+        {
+            usedEndings.Clear();
+            available = pack.endings;
+        }
+
+        string ending = available[Random.Range(0, available.Count)];
+        usedEndings.Add(ending);
+
         string placement = pack.placements[Random.Range(0, pack.placements.Count)];
 
         Debug.Log($"Ending: {ending} | Placement: {placement}");
+        Debug.Log($"Remaining: {maxUnique - usedEndings.Count}");
 
         return new PhraseElement(ending, placement);
     }

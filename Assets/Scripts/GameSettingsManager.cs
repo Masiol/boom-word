@@ -75,16 +75,12 @@ public static class GameSettingsManager
     {
         switch (BombTimeOption)
         {
-            //  case 0: return (30, 60);
-            //  case 1: return (60, 90);
-            //  case 2: return (90, 120);
-            //  case 3: return (30, 120);
-            //  default: return (30, 60);
-              case 0: return (5, 5);
-              case 1: return (5, 5);
-              case 2: return (5, 5);
-              case 3: return (5, 5);
-              default: return (5, 5);
+              case 0: return (30, 60);
+              case 1: return (60, 90);
+              case 2: return (90, 120);
+              case 3: return (30, 120);
+              default: return (30, 60);
+
         }
     }
 }

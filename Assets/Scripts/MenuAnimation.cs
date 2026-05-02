@@ -67,6 +67,10 @@ public class MenuAnimation : MonoBehaviour
 
     Sequence howToPlaySequence;
 
+    public GameObject adsHolder;
+    Vector3 adsHolderScale;
+    public Ease adsHolderEase;
+
     void Awake()
     {
         SaveInitialPositions();
@@ -93,6 +97,7 @@ public class MenuAnimation : MonoBehaviour
         textStartPos = logoText.anchoredPosition;
         buttonsStartPos = buttonsParent.anchoredPosition;
         panelStartPos = packagePanel.anchoredPosition;
+        adsHolderScale = adsHolder.transform.localScale;
     }
 
     void PreparePanels()
@@ -132,6 +137,7 @@ public class MenuAnimation : MonoBehaviour
     {
         StopBombIdle();
         howToPlaySequence.Restart();
+    
     }
 
     public void ReverseHowToPlay()
@@ -168,14 +174,28 @@ public class MenuAnimation : MonoBehaviour
             logoBomb.DOAnchorPosX(bombStartPos.x, 0.35f)
                 .SetEase(Ease.OutCubic)
         );
+
+        
     }
 
     // =========================
     // START TRANSITION
     // =========================
 
+    public void HideAds()
+    {
+        adsHolder.transform.DOScale(Vector3.zero, 0.2f).SetEase(adsHolderEase);
+    }
+    public void ShowAds()
+    {
+        adsHolder.transform.DOScale(adsHolderScale, 0.15f).SetEase(adsHolderEase).SetDelay(0.15f);
+
+    }
+
     void BuildStartSequence()
     {
+        
+
         startSequence = DOTween.Sequence()
             .SetAutoKill(false)
             .Pause();
@@ -317,6 +337,7 @@ public class MenuAnimation : MonoBehaviour
     public void ReverseStart()
     {
         StopBombIdle();
+
 
         Sequence reverse = DOTween.Sequence();
 

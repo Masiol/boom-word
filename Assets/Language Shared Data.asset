@@ -79,6 +79,10 @@ MonoBehaviour:
     m_Key: GAME.nextround
     m_Metadata:
       m_Items: []
+  - m_Id: 2937520837791744
+    m_Key: ADS.ourapplications
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

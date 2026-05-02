@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 3a89d754e790e6a44a25c4b220ed0b23
+guid: 25994ae2bb7f4664db09145d05c606f4
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 7982187317204991484
-    second: germany_0
+      213: -7237732414273551441
+    second: bg 2 (1)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,13 +126,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: germany_0
+      name: bg 2 (1)_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 512
-        height: 512
+        width: 1705
+        height: 784
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -141,8 +141,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cfdb1a4d21d66ce60800000000000000
-      internalID: 7982187317204991484
+      spriteID: fa305e367b86e8b90800000000000000
+      internalID: -7237732414273551441
       vertices: []
       indices: 
       edges: []
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      germany_0: 7982187317204991484
+      bg 2 (1)_0: -7237732414273551441
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
