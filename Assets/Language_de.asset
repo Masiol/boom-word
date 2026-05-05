@@ -63,7 +63,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 28676331573248
-    m_Localized: Vibrationen
+    m_Localized: Vibration
     m_Metadata:
       m_Items: []
   - m_Id: 28645159505920
@@ -86,6 +86,21 @@ MonoBehaviour:
     m_Localized: 'Unsere Anwendungen:
 
 '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4030347294445568
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4030776615014400
+    m_Localized: "TicTacWord ist ein schnelles Wortspiel, bei dem es auf Kreativit\xE4t
+      und Sprachgef\xFChl ankommt.\n\nDu bekommst Wortfragmente (z. B. \u201E-en\u201C)
+      sowie eine Positionsregel (z. B. nicht am Ende).\n\nDeine Aufgabe ist es, ein
+      Wort zu bilden, das:\n\ndas Fragment enth\xE4lt\nund die Positionsregel erf\xFCllt\n\nBeispiel:\n\u201Edenken\u201C
+      \u2714 (\u201Een\u201C nie tylko na ko\u0144cu \u2014 jest te\u017C w \u015Brodku
+      \u201Edenk-en\u201D nie, wait)\n\nBeispiel:\n\u201EFenster\u201C \u2714 \n\u201Egehen\u201C
+      \u2718 \n\nNach einer richtigen Antwort gibst du das Handy an die n\xE4chste
+      Person weiter!\n\nSei schnell \u2014 lass die Bombe nicht in deiner Hand explodieren!"
     m_Metadata:
       m_Items: []
   references:

@@ -86,6 +86,19 @@ MonoBehaviour:
     m_Localized: 'Our applications:'
     m_Metadata:
       m_Items: []
+  - m_Id: 4030347294445568
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4030776615014400
+    m_Localized: "TicTacWord is a fast-paced word game where wit and vocabulary matter.\n\nYou
+      get word fragments (e.g. \u201C-ing\u201D) and placement rules (e.g. not at
+      the end).\n\nYour task is to create a word that:\n\ncontains the given fragment\nand
+      follows the placement rule\n\nExample:\n\u201Csingle\u201D \u2714 \n\u201Crunning\u201D
+      \u2718 \n\nAfter a correct answer, pass the phone to the next player!\n\nBe
+      quick \u2014 don\u2019t let the bomb explode in your hands!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -86,6 +86,21 @@ MonoBehaviour:
     m_Localized: 'Nasze aplikacje:'
     m_Metadata:
       m_Items: []
+  - m_Id: 4030347294445568
+    m_Localized: Cofnij
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4030776615014400
+    m_Localized: "TicTacWord to szybka gra s\u0142owna, w kt\xF3rej liczy si\u0119
+      spryt i znajomo\u015B\u0107 j\u0119zyka.\n\nDostajesz fragmenty s\u0142owa
+      (np. \u201E-owo\u201D) oraz miejsce ich po\u0142o\u017Cenia (np. nie na ko\u0144cu).\n\nTwoim
+      zadaniem jest u\u0142o\u017Cy\u0107 s\u0142owo, kt\xF3re:\n\nzawiera dany fragment
+      a tak\u017Ce spe\u0142nia warunki jego umiejscowienia.\n\n\nPrzyk\u0142ad:
+      \u201Eowocowy\u201D \u2714\n\u201Ekolorowo\u201D \u2718\n\nPo poprawnie wybranym
+      s\u0142owie telefon przekazujesz nast\u0119pnej osobie!\n\nPami\u0119taj aby
+      zmie\u015Bci\u0107 si\u0119 w czasie i aby bomba nie wybuch\u0142a na Tobie! "
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -9,7 +9,8 @@ public enum SoundID
     ClockLoop,
     Swish,
     Countdown,
-    FinishCountdown
+    FinishCountdown,
+    Premium
 }
 
 public class SoundManager : MonoBehaviour

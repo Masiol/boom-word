@@ -17,7 +17,7 @@ public class PremiumManager : MonoBehaviour, IStoreListener
     [Header("Premium UI")]
     public Transform premiumButtonTransform;   // do skalowania (RectTransform)
     public Button premiumUIButton;             // Button komponent
-    public Text premiumButtonText;             // opcjonalnie tekst
+   // public Text premiumButtonText;             // opcjonalnie tekst
 
     private Tween pulseTween;
 
@@ -48,6 +48,7 @@ public class PremiumManager : MonoBehaviour, IStoreListener
         if (IsPremiumActive())
         {
             RemovePurchaseLogic();
+            Debug.Log("remove");
             StopPulseAnimationImmediate();
         }
         else
@@ -177,6 +178,7 @@ public class PremiumManager : MonoBehaviour, IStoreListener
 
     public void BuyFullVersion()
     {
+        Debug.Log("click");
         if (controller != null)
         {
             controller.InitiatePurchase(fullVersionProductId);

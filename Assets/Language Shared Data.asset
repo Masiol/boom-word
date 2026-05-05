@@ -83,6 +83,14 @@ MonoBehaviour:
     m_Key: ADS.ourapplications
     m_Metadata:
       m_Items: []
+  - m_Id: 4030347294445568
+    m_Key: MENU.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4030776615014400
+    m_Key: MENU.howtoplaytext
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
