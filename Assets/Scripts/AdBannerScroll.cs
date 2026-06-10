@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using DG.Tweening;
 using TMPro;
+using UnityEngine;
+using UnityEngine.Localization.Settings;
+using UnityEngine.UI;
 
 public enum GameTypeAd
 {
@@ -69,6 +70,43 @@ public class AdBannerScroll : MonoBehaviour
     // UNITY
     // =========================
 
+    private void OnEnable()
+    {
+        LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
+    }
+
+    private void OnDisable()
+    {
+        LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
+    }
+
+    private void OnLocaleChanged(UnityEngine.Localization.Locale locale)
+    {
+        string code = locale.Identifier.Code.ToUpper();
+        currentLanguage = code switch
+        {
+            "PL" => GameLanguage.Polish,
+            "DE" => GameLanguage.German,
+            _ => GameLanguage.English
+        };
+        StartCoroutine(SpawnNextFrame());
+    }
+
+    private void LoadLanguageFromPrefs()
+    {
+        string langCode = GameSettingsManager.Language;
+
+        if (string.IsNullOrEmpty(langCode))
+            langCode = PlayerPrefs.GetString("SelectedLanguage", "en");
+
+        currentLanguage = langCode.ToUpper() switch
+        {
+            "PL" => GameLanguage.Polish,
+            "DE" => GameLanguage.German,
+            _ => GameLanguage.English
+        };
+    }
+
     void Start()
     {
         LoadLanguageFromPrefs();
@@ -101,7 +139,7 @@ public class AdBannerScroll : MonoBehaviour
     // LANGUAGE
     // =========================
 
-    private void LoadLanguageFromPrefs()
+    /*private void LoadLanguageFromPrefs()
     {
         int langValue = PlayerPrefs.GetInt("SelectedLanguage", 1);
         currentLanguage = langValue switch
@@ -111,7 +149,7 @@ public class AdBannerScroll : MonoBehaviour
             2 => GameLanguage.German,
             _ => GameLanguage.English
         };
-    }
+    }*/
 
     // =========================
     // SPAWN LOGIC
