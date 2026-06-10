@@ -10,7 +10,8 @@ public enum GameTypeAd
     ChooseWho,
     SeventyFiveHard,
     TruthOrDare,
-    TicTacWord
+    TicTacWord,
+    TruthOrDare2
 }
 
 public enum GameLanguage
@@ -276,6 +277,8 @@ public class AdBannerScroll : MonoBehaviour
 
     private void MoveNext()
     {
+        if (spawnedAds.Count == 0) return;
+
         isMoving = true;
         float step = adWidth + spacing;
 
@@ -284,15 +287,21 @@ public class AdBannerScroll : MonoBehaviour
 
         DOVirtual.DelayedCall(moveDuration, () =>
         {
-            RectTransform first = spawnedAds[0];
-            if (first.anchoredPosition.x + adWidth < 0)
+            // przesuń WSZYSTKIE elementy które wyszły za lewy ekran
+            for (int i = 0; i < spawnedAds.Count; i++)
             {
-                RectTransform last = spawnedAds[spawnedAds.Count - 1];
-                first.anchoredPosition =
-                    new Vector2(last.anchoredPosition.x + adWidth + spacing, 0);
+                RectTransform rt = spawnedAds[i];
+                if (rt.anchoredPosition.x + adWidth < -spacing)
+                {
+                    // znajdź ostatni element i ustaw za nim
+                    RectTransform last = spawnedAds[spawnedAds.Count - 1];
+                    float newX = last.anchoredPosition.x + adWidth + spacing;
+                    rt.anchoredPosition = new Vector2(newX, 0);
 
-                spawnedAds.RemoveAt(0);
-                spawnedAds.Add(first);
+                    spawnedAds.RemoveAt(i);
+                    spawnedAds.Add(rt);
+                    i--;
+                }
             }
 
             isMoving = false;
